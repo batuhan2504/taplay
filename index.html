@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<script>if(/[?&]iban=/i.test(location.search)){location.replace("iban.html"+location.search)}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Taplay | NFC Kartlar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050505; --surface:#111111; --line:#2e2718; --text:#f4efe6; --muted:#a39b8b;
+  --accent:#c9a45c; --glow:#e6c987; --ok:#c9a45c;
+  --head:'Cormorant Garamond',Georgia,serif; --body:'DM Sans',system-ui,sans-serif;
+  color-scheme:dark;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:400 17px/1.6 var(--body);overflow-x:hidden}
+h1,h2,h3{font-family:var(--head);line-height:1.1;margin:0}
+a{color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+section{padding:72px 0}
+h2{font-size:clamp(34px,6vw,52px);font-weight:700;margin-bottom:12px}
+.lead{color:var(--muted);max-width:52ch;margin:0 0 36px}
+.btn{display:inline-block;background:var(--accent);color:#0a0a0a;font-weight:500;text-decoration:none;padding:14px 26px;border-radius:999px;transition:transform .15s,background .15s}
+.btn:hover{background:#e6c987;transform:translateY(-2px)}
+.btn:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--glow);outline-offset:3px}
+.btn.ghost{background:transparent;border:1px solid var(--line);margin-left:8px}
+.btn.ghost:hover{background:var(--surface)}
+nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0}
+.logo{font:800 24px var(--head);text-decoration:none;letter-spacing:-.5px}
+.logo i{font-style:normal;color:var(--glow)}
+nav a.mini{font-size:15px;color:var(--muted);text-decoration:none}
+
+/* hero */
+.hero{display:grid;gap:40px;align-items:center;padding:36px 0 72px}
+.hero h1{font-size:clamp(46px,9vw,84px);font-weight:700;letter-spacing:-.5px}
+.hero p{color:var(--muted);font-size:19px;max-width:44ch;margin:18px 0 28px}
+.stage{position:relative;height:340px;max-width:420px;width:100%;margin:0 auto}
+.phone{position:absolute;right:14%;top:8px;width:150px;height:300px;border-radius:30px;background:var(--surface);border:2px solid var(--line);padding:16px 12px;overflow:hidden}
+.phone::before{content:"";display:block;width:44px;height:6px;border-radius:9px;background:var(--line);margin:0 auto 18px}
+.chip{display:block;font-size:13px;padding:9px 11px;border-radius:12px;background:var(--bg);border:1px solid var(--line);margin-bottom:10px;opacity:0;transform:translateY(10px);animation:pop .5s forwards}
+.chip:nth-child(2){animation-delay:2.1s}.chip:nth-child(3){animation-delay:2.4s}.chip:nth-child(4){animation-delay:2.7s}
+.chip b{color:var(--glow);font-weight:500}
+.card{position:absolute;left:2%;top:150px;width:190px;height:120px;border-radius:16px;background:linear-gradient(135deg,#1e1e1e,#000);border:1px solid var(--accent);color:var(--accent);padding:16px;display:flex;flex-direction:column;justify-content:space-between;font:800 22px var(--head);box-shadow:0 18px 40px #c9a45c33;animation:tap 3.2s ease-in-out .4s infinite}
+.card small{font:400 12px var(--body);opacity:.8}
+.ring{position:absolute;right:calc(14% + 75px);top:120px;width:20px;height:20px;margin:-10px;border:2px solid var(--glow);border-radius:50%;opacity:0;animation:ring 3.2s ease-out .4s infinite}
+.ring:nth-of-type(2){animation-delay:.7s}
+@keyframes tap{0%,15%{transform:translate(0,0) rotate(-6deg)}45%,70%{transform:translate(120px,-70px) rotate(0)}100%{transform:translate(0,0) rotate(-6deg)}}
+@keyframes ring{0%,38%{opacity:0;transform:scale(1)}45%{opacity:.9}100%{opacity:0;transform:scale(9)}}
+@keyframes pop{to{opacity:1;transform:none}}
+
+/* steps */
+.steps{display:grid;gap:18px;counter-reset:s}
+.step{border-left:3px solid var(--accent);padding:4px 0 4px 20px}
+.step::before{counter-increment:s;content:counter(s);font:800 14px var(--head);color:var(--glow)}
+.step h3{font-size:22px;margin:2px 0 6px}
+.step p{margin:0;color:var(--muted)}
+
+/* uses */
+.uses{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.use{background:var(--surface);border-radius:20px;padding:24px}
+.use:nth-child(1){border-radius:20px 20px 4px 20px}.use:nth-child(4){border-radius:20px 4px 20px 20px}
+.use h3{font-size:20px;margin-bottom:8px}.use p{margin:0;color:var(--muted);font-size:15px}
+.use span{font-size:28px;display:block;margin-bottom:10px}
+
+/* pricing */
+.plans{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,380px))}
+.plan{border:1px solid var(--line);border-radius:22px;padding:28px;display:flex;flex-direction:column}
+.plan.pick{border-color:var(--accent);background:linear-gradient(180deg,#1c170c,var(--surface))}
+.plan h3{font-size:22px}.price{font:800 40px var(--head);margin:12px 0}.price small{font:400 15px var(--body);color:var(--muted)}
+.plan ul{list-style:none;padding:0;margin:0 0 24px;color:var(--muted);font-size:15px;flex:1}
+.plan li{padding:5px 0}.plan li::before{content:"✓ ";color:var(--ok)}
+.plan .btn{text-align:center}
+
+/* faq */
+details{border-bottom:1px solid var(--line);padding:18px 0}
+summary{cursor:pointer;font:600 19px var(--head);list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::after{content:"+";color:var(--glow);font-size:24px;line-height:1}
+details[open] summary::after{content:"–"}
+details p{color:var(--muted);margin:12px 0 0;max-width:60ch}
+
+.cta{text-align:center;background:var(--surface);border-radius:28px;padding:56px 22px}
+.cta p{color:var(--muted);margin:10px auto 26px;max-width:40ch}
+footer{padding:36px 0;color:var(--muted);font-size:14px;text-align:center}
+
+@media(min-width:820px){.hero{grid-template-columns:1.1fr .9fr}.steps{grid-template-columns:repeat(3,1fr)}.step{border-left:0;border-top:3px solid var(--accent);padding:16px 0 0}}
+@media(prefers-reduced-motion:reduce){.card,.ring{animation:none}.chip{animation:none;opacity:1;transform:none}.card{transform:translate(120px,-70px)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav><a class="logo" href="#">Tap<i>lay</i></a><a class="mini" href="#fiyat">Fiyatlar</a></nav>
+
+  <header class="hero">
+    <div>
+      <h1>Kartı yaklaştır, profilin açılsın.</h1>
+      <p>Taplay NFC kartlar, Instagram hesabını, Google yorum sayfanı ve tüm bağlantılarını tek dokunuşla müşterinin telefonuna taşır.</p>
+      <a class="btn" href="#fiyat">Sipariş Ver</a><a class="btn ghost" href="#nasil">Nasıl çalışır?</a>
+    </div>
+    <div class="stage" aria-hidden="true">
+      <div class="phone"><span class="chip">📷 <b>Instagram</b> profili</span><span class="chip">⭐ <b>Google</b> yorumu</span><span class="chip">💬 <b>WhatsApp</b> hattı</span></div>
+      <div class="ring"></div><div class="ring"></div>
+      <div class="card">Taplay<small>NFC kart</small></div>
+    </div>
+  </header>
+
+  <section id="nasil">
+    <h2>Nasıl çalışır?</h2>
+    <p class="lead">Uygulama indirmeye gerek yok. Kart, modern telefonların hepsinde doğrudan çalışır.</p>
+    <div class="steps">
+      <div class="step"><h3>Kartı seç</h3><p>Modelini seç, logon ve renklerinle kişiselleştir.</p></div>
+      <div class="step"><h3>Bağlantını belirle</h3><p>Instagram, Google yorum, menü veya iletişim bağlantını kartın içine tanımlarız.</p></div>
+      <div class="step"><h3>Telefona yaklaştır</h3><p>Müşteri kartı telefonun arkasına tutar, sayfa anında açılır.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Kartla neler yapabilirsin?</h2>
+    <p class="lead">Müşterinin bir adımda ulaşmasını istediğin her şey için.</p>
+    <div class="uses">
+      <div class="use"><span>📷</span><h3>Instagram takipçisi</h3><p>Hesabını arayıp yazmalarına gerek kalmadan profilin açılır, tek dokunuşla takip ederler.</p></div>
+      <div class="use"><span>⭐</span><h3>Google yorumu</h3><p>Doğrudan yorum yazma ekranı açılır. Daha çok yorum, daha yüksek puan.</p></div>
+      <div class="use"><span>🍽️</span><h3>Dijital menü</h3><p>Masadaki kart menüyü açar, basılı menüyü yenilemek zorunda kalmazsın.</p></div>
+      <div class="use"><span>📇</span><h3>İletişim kartı</h3><p>Telefon, e-posta ve konumun rehbere tek dokunuşla kaydedilir.</p></div>
+    </div>
+  </section>
+
+  <section id="fiyat">
+    <h2>Taplay Kart</h2>
+    <p class="lead">Siparişi WhatsApp üzerinden hemen verebilirsin.</p>
+    <div class="plans">
+      <div class="plan"><h3>Klasik</h3><div class="price">600₺</div><ul><li>Instagram, Google yorum veya menü bağlantısı</li><li>Telefona yaklaştır, hemen açılsın</li><li>Pil ve uygulama gerekmez</li></ul><a class="btn" href="https://wa.me/905364438188?text=Merhaba%2C%20Taplay%20Klasik%20kart%20almak%20istiyorum">Sipariş Ver</a></div>
+      
+      
+    </div>
+  </section>
+
+  <section>
+    <h2>Sık sorulan sorular</h2>
+    <details><summary>Hangi telefonlarda çalışır?</summary><p>Son yıllarda çıkan iPhone ve Android telefonların neredeyse tamamında çalışır. Uygulama gerekmez.</p></details>
+    <details><summary>Pil veya şarj gerekir mi?</summary><p>Hayır. Kart telefondan güç alır, bitmez ve şarj istemez.</p></details>
+    <details><summary>Bağlantıyı sonradan değiştirebilir miyim?</summary><p>Bağlantı değişikliği için WhatsApp'tan bize yazman yeterli.</p></details>
+    <details><summary>Teslimat ne kadar sürer?</summary><p>Siparişten sonra kart hazırlanıp kargoya verilir. Süre için WhatsApp'tan yazman yeterli.</p></details>
+  </section>
+
+  <section>
+    <div class="cta">
+      <h2>Kartını bugün hazırlayalım</h2>
+      <p>Sorularını WhatsApp'tan yaz, birkaç dakikada dönüş yapalım.</p>
+      <a class="btn" href="https://wa.me/905364438188">WhatsApp'tan yaz</a>
+    </div>
+  </section>
+
+  <footer>© Taplay · Instagram: <a href="https://instagram.com/taplay.tr">@taplay.tr</a></footer>
+</div>
+</body>
+</html>
